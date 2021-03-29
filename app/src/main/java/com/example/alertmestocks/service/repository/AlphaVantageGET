@@ -1,0 +1,5 @@
+class AlphaVantageGET(val userSettings) {
+    @TODO // request
+
+    @TODO // parse
+}
