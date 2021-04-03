@@ -1,4 +1,4 @@
-package com.example.alertmestocks
+package com.example.alertmestock
 
 import org.junit.Test
 
