@@ -1,3 +1,0 @@
-class AlphaVantagePOST(json:String) {
-    @TODO // parsing
-}
