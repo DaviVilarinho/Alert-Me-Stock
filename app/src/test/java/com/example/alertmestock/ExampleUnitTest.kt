@@ -1,6 +1,7 @@
 package com.example.alertmestock
 
 import User
+import com.example.alertmestock.service.FinProp
 import com.example.alertmestock.service.FinPropService
 import org.junit.Test
 
@@ -14,11 +15,11 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun testingApi() {
-        val davi = User(APIKEY, true)
+        val davi = User("", true)
         val fin = FinPropService(davi)
 
-        val aapl = fin.getStockData("AAPL") ?: "erro"
+        val aapl: Array<FinProp> = fin.getStockData("AAPL")
 
-        println(aapl)
+        println(aapl[0].price)
     }
 }
