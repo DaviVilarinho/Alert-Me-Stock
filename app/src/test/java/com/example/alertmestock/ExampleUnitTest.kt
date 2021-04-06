@@ -1,11 +1,10 @@
 package com.example.alertmestock
 
+import Stock
 import User
 import com.example.alertmestock.service.FinProp
 import com.example.alertmestock.service.FinPropService
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -21,5 +20,12 @@ class ExampleUnitTest {
         val aapl: Array<FinProp> = fin.getStockData("AAPL")
 
         println(aapl[0].price)
+    }
+
+    @Test
+    fun stock() {
+        val aapl = Stock("AAPL", 50.5, 49.5, true)
+
+        println(aapl.reached)
     }
 }
