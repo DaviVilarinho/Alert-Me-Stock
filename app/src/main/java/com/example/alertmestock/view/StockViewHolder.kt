@@ -1,4 +1,4 @@
-package com.example.alertmestock.viewmodel
+package com.example.alertmestock.view
 
 import android.view.View
 import android.widget.TextView

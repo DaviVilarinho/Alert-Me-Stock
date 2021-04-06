@@ -3,12 +3,10 @@ package com.example.alertmestock.view
 import Stock
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alertmestock.R
-import com.example.alertmestock.viewmodel.StockAdapter
 
 class MainActivity : AppCompatActivity() {
 
