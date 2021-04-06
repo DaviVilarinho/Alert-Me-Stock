@@ -18,15 +18,9 @@ class StockAdapter(private val stockList:MutableList<Stock>): RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: StockViewHolder, position: Int) {
-        val item = holder.itemView
-
-        val name = item.findViewById<TextView>(R.id.stock_name)
-        val price= item.findViewById<TextView>(R.id.stock_price)
-        val reach= item.findViewById<TextView>(R.id.check)
-
-        name.text = stockList[position].tick
-        price.text = stockList[position].last_price.toString()
-        reach.text = stockList[position].reached
+        holder.name.text = stockList[position].tick
+        holder.price.text = stockList[position].last_price.toString()
+        holder.reach.text = stockList[position].reached
     }
 
 }
