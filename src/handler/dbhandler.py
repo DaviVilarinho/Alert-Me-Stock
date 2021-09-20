@@ -1,7 +1,7 @@
 import psycopg2
 import handler.credential as crd
 
-GET_ALL_STOCKS = "SELECT id, tick FROM stocks"
+GET_ALL_STOCKS = "SELECT id, tick, isUs FROM stocks"
 
 class DbHandler:
     def __init__(self):
