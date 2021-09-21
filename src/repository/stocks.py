@@ -37,7 +37,7 @@ class Stock:
 
 
     def __str__(self):
-        return '{"TICK": {}, "DaySync": {}, "Price": {}, "UpperBand": {}, "LowerBand": {}}'.format(self.tick, self.lastDaySync.isoformat(), self.price, self.bbhi, self.bblow)
+        return '{"TICK": {}, "DaySync": {}, "Price": {}, "UpperBand": {}, "LowerBand": {}, "inWarning": {}}'.format(self.tick, self.lastDaySync.isoformat(), self.price, self.bbhi, self.bblow, self.isWarnable())
 
     def isWarnable(self):
         try: 
@@ -46,10 +46,12 @@ class Stock:
             self.bbhi      = float(self.bollingers[self.lastDaySync.isoformat()]["Real Upper Band"])
 
             logging.info("Prices ({}, {}, {}) are found by the day {}".format(self.refprice, self.bblow, self.bbhi, self.lastDaySync.isoformat()))
-            if self.refprice >= self.bbhi or self.refprice <= self.bblow:
-                return True
+            if self.refprice >= self.bbhi :
+                return 1
+            elif self.refprice <= self.bblow:
+                return -1
             else:
-                return False
+                return 0
         except KeyError: # if there's no date
             logging.warning("KEY ERROR: {} is not avaiable!".format(self.lastDaySync.isoformat()))
             return False # there's nothing to see
