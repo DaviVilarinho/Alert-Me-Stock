@@ -1,5 +1,6 @@
 import handler.credential as crd
 import requests
+import datetime
 
 def getAlphaVantageURLBollinger(symbol: str):
     return "https://www.alphavantage.co/query?function=BBANDS&symbol={}&interval=weekly&time_period=22&matype=1&series_type=close&nbdevup=1.3&nbdevdn=1.3&apikey={}".format(symbol, crd.ALPHA_VANTAGE_KEY) # 1.3 at stddev because i need WARNINGS, not exactly when
@@ -27,7 +28,13 @@ class Stock:
         req.close()
 
     def isWarnable(self):
-        print(self.prices[0][0]) 
+        print("ok")
         
     def findLastSyncDate(self):
+        today = datetime.date.today()
         for i in range(10): # try 10 different days
+            try:
+                if self.bollingers[today.isoformat()] and self.prices[today.isoformat()]:
+                    return today
+            except KeyError:
+                today = today - datetime.timedelta(days=1)
