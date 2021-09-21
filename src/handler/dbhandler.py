@@ -25,3 +25,12 @@ class DbHandler:
     def closeConnection(self):
         self.con.close()
         logging.info("Closed connection to db")
+
+    def insertStockStatuses(self, st):
+        cur = self.con.cursor()
+        cur.execute(
+            "INSERT INTO stockstatuses (stockid, datefield, pricestatus) VALUES ({}, '{}', {})".format(st.stockid, st.lastDaySync.isoformat(), st.isWarnable())
+        )
+
+        self.con.commit()
+        logging.info("Inserted stock status of {}".format(st.tick))

@@ -12,7 +12,8 @@ def getAlphaVantageURLPrice(symbol: str):
 
 
 class Stock:
-    def __init__(self, tick: str):
+    def __init__(self, stockid: int, tick: str):
+        self.stockid = stockid
         self.tick = tick
 
         # getting Bollinger Data
@@ -37,7 +38,7 @@ class Stock:
 
 
     def __str__(self):
-        return '{"TICK": {}, "DaySync": {}, "Price": {}, "UpperBand": {}, "LowerBand": {}, "inWarning": {}}'.format(self.tick, self.lastDaySync.isoformat(), self.price, self.bbhi, self.bblow, self.isWarnable())
+        return '{"StockId": {}, "Tick": {}, "DaySync": {}, "Price": {}, "UpperBand": {}, "LowerBand": {}, "pricestatus": {}}'.format(self.stockid, self.tick, self.lastDaySync.isoformat(), self.refprice, self.bbhi, self.bblow, self.isWarnable())
 
     def isWarnable(self):
         try: 
@@ -54,7 +55,7 @@ class Stock:
                 return 0
         except KeyError: # if there's no date
             logging.warning("KEY ERROR: {} is not avaiable!".format(self.lastDaySync.isoformat()))
-            return False # there's nothing to see
+            return 0 # there's nothing to see
         
         
         
