@@ -1,6 +1,7 @@
 import handler.credential as crd
 import requests
 import datetime
+import logging
 
 def getAlphaVantageURLBollinger(symbol: str):
     return "https://www.alphavantage.co/query?function=BBANDS&symbol={}&interval=weekly&time_period=22&matype=1&series_type=close&nbdevup=1.3&nbdevdn=1.3&apikey={}".format(symbol, crd.ALPHA_VANTAGE_KEY) # 1.3 at stddev because i need WARNINGS, not exactly when
@@ -19,6 +20,7 @@ class Stock:
         self.bollingers = req.json()
         self.bollingers = self.bollingers["Technical Analysis: BBANDS"] # encontrar & assignar json
         req.close()
+        logging.info("got bollinger bands for " + self.tick)
 
         # getting price data
         req = requests.get(getAlphaVantageURLPrice(self.tick))
@@ -26,20 +28,24 @@ class Stock:
         self.prices = req.json()
         self.prices = self.prices["Time Series (Daily)"]
         req.close()
+        logging.info("got prices for " + self.tick)
 
     def isWarnable(self):
         lastDaySync = self.findLastSyncDate()
+        logging.info("Last Sync Date found " + lastDaySync.isoformat())
 
         try: 
             refprice  = float(self.prices[lastDaySync.isoformat()]["4. close"])
             bblow     = float(self.bollingers[lastDaySync.isoformat()]["Real Lower Band"])
             bbhi      = float(self.bollingers[lastDaySync.isoformat()]["Real Upper Band"])
 
+            logging.info("Prices ({}, {}, {}) are found by the day {}".format(refprice, bblow, bbhi, lastDaySync.isoformat()))
             if refprice >= bbhi or refprice <= bblow:
                 return True
             else:
                 return False
         except KeyError: # if there's no date
+            logging.warning("KEY ERROR: {} is not avaiable!".format(lastDaySync.isoformat()))
             return False # there's nothing to see
         
         
@@ -49,6 +55,7 @@ class Stock:
         for i in range(10): # try 10 different days
             try:
                 if self.bollingers[today.isoformat()] and self.prices[today.isoformat()]: # if today is the fetch day
+                    logging.info("Find day synced and it is: " + today.isoformat())
                     return today
             except KeyError: # if not, subtract one day
                 today = today - datetime.timedelta(days=1)
