@@ -29,23 +29,26 @@ class Stock:
         self.prices = self.prices["Time Series (Daily)"]
         req.close()
         logging.info("got prices for " + self.tick)
+        self.lastDaySync = self.findLastSyncDate()
+
+    def __str__(self):
+        return '{"TICK": {}, "DaySync": {}, }'.format(self.tick, self.lastDaySync, )
 
     def isWarnable(self):
-        lastDaySync = self.findLastSyncDate()
         logging.info("Last Sync Date found " + lastDaySync.isoformat())
 
         try: 
-            refprice  = float(self.prices[lastDaySync.isoformat()]["4. close"])
-            bblow     = float(self.bollingers[lastDaySync.isoformat()]["Real Lower Band"])
-            bbhi      = float(self.bollingers[lastDaySync.isoformat()]["Real Upper Band"])
+            refprice  = float(self.prices[self.lastDaySync.isoformat()]["4. close"])
+            bblow     = float(self.bollingers[self.lastDaySync.isoformat()]["Real Lower Band"])
+            bbhi      = float(self.bollingers[self.lastDaySync.isoformat()]["Real Upper Band"])
 
-            logging.info("Prices ({}, {}, {}) are found by the day {}".format(refprice, bblow, bbhi, lastDaySync.isoformat()))
+            logging.info("Prices ({}, {}, {}) are found by the day {}".format(refprice, bblow, bbhi, self.lastDaySync.isoformat()))
             if refprice >= bbhi or refprice <= bblow:
                 return True
             else:
                 return False
         except KeyError: # if there's no date
-            logging.warning("KEY ERROR: {} is not avaiable!".format(lastDaySync.isoformat()))
+            logging.warning("KEY ERROR: {} is not avaiable!".format(self.lastDaySync.isoformat()))
             return False # there's nothing to see
         
         
