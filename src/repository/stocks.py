@@ -29,21 +29,24 @@ class Stock:
         self.prices = self.prices["Time Series (Daily)"]
         req.close()
         logging.info("got prices for " + self.tick)
-        self.lastDaySync = self.findLastSyncDate()
+
+        self.lastDaySync = self.findLastSyncDate() # find the correct date
+        self.refprice = -1
+        self.bblow    = -1
+        self.bbhi     = -1
+
 
     def __str__(self):
-        return '{"TICK": {}, "DaySync": {}, }'.format(self.tick, self.lastDaySync, )
+        return '{"TICK": {}, "DaySync": {}, "Price": {}, "UpperBand": {}, "LowerBand": {}}'.format(self.tick, self.lastDaySync.isoformat(), self.price, self.bbhi, self.bblow)
 
     def isWarnable(self):
-        logging.info("Last Sync Date found " + lastDaySync.isoformat())
-
         try: 
-            refprice  = float(self.prices[self.lastDaySync.isoformat()]["4. close"])
-            bblow     = float(self.bollingers[self.lastDaySync.isoformat()]["Real Lower Band"])
-            bbhi      = float(self.bollingers[self.lastDaySync.isoformat()]["Real Upper Band"])
+            self.refprice  = float(self.prices[self.lastDaySync.isoformat()]["4. close"])
+            self.bblow     = float(self.bollingers[self.lastDaySync.isoformat()]["Real Lower Band"])
+            self.bbhi      = float(self.bollingers[self.lastDaySync.isoformat()]["Real Upper Band"])
 
-            logging.info("Prices ({}, {}, {}) are found by the day {}".format(refprice, bblow, bbhi, self.lastDaySync.isoformat()))
-            if refprice >= bbhi or refprice <= bblow:
+            logging.info("Prices ({}, {}, {}) are found by the day {}".format(self.refprice, self.bblow, self.bbhi, self.lastDaySync.isoformat()))
+            if self.refprice >= self.bbhi or self.refprice <= self.bblow:
                 return True
             else:
                 return False

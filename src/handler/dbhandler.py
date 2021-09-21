@@ -17,7 +17,7 @@ class DbHandler:
         cur.execute(GET_ALL_STOCKS)
         
         rows = cur.fetchall()
-        logging.info("Fetched Stocks: " + rows)
+        logging.info("Fetched Stocks: " + str(rows))
 
         cur.close()
         return rows
