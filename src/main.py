@@ -25,7 +25,10 @@ def main():
     for st in dbcon.getStocks():
         time.sleep(30)
         logging.info("Try warning for: {}".format(st))
-        stockObj = Stock(st[STOCK_ID_POS], st[TICK_POS])
+        try:
+            stockObj = Stock(st[STOCK_ID_POS], st[TICK_POS])
+        except KeyError:
+            continue # not found stock probably
 
         status = stockObj.isWarnable()
 
