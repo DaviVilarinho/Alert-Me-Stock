@@ -10,15 +10,14 @@ terraform {
 } 
 
 provider "aws" {
-  profile = var.profile
-  region  = var.region
+  profile = "default"
+  region  = "us-east-2"
 }
 
-resource "aws_instance" "database_server" {
-  ami           = var.ami_id
-  instance_type = var.instance_type
-
-  tags = {
-    Name = var.instance_name
-  }
+resource "aws_db_psql" "db_stocks" {
+  allocated_storage     = 1  
+  max_allocated_storage = 3
+# todo: decide NoSQL -> cheaper
+  engine                = ""
+  engine_version        = ""
 }
