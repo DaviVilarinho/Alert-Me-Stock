@@ -15,10 +15,9 @@ provider "aws" {
 }
 
 
-data "aws_db_instance" "psql_money_database" {
-  db_instance_identifier = "psql_money_database"
-  allocated_storage      = 2
-  engine                 = "postgresql"
+resource "aws_db_instance" "mysql_money_database" {
+  allocated_storage      = 10
+  engine                 = "mysql"
   instance_class         = "db.t2.micro"
   name                   = "money"
   username               = var.db_user
