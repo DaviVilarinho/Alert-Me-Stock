@@ -1,3 +1,5 @@
 /src/handler/credentials.py
 __pycache__/
-
+/infrastructure/.terraform*
+/infrastructure/terraform.tfstate
+/infrastructure/variables.tf
